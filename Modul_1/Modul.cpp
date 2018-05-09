@@ -159,7 +159,7 @@ void List_of_Member :: FindMemberByID(int ID)
 	}
 }
 
-// Tim mot thanh vien qua ID
+// Tra ve so thanh vien trong danh sach
 int List_of_Member :: NumberOfMember()
 {
 	return memberList->Length();

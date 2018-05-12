@@ -4,7 +4,7 @@ Do Ngoc Son
 Nguyen Dinh Quan
 3 20 1
 Dong Quang Linh
-4 20 2
+4 17 4
 Vu Xuan Luong
 5 19 2
 Hoa Thi Huong
@@ -14,5 +14,15 @@ Le Van Hoang
 Nguyen Minh Tien
 8 22 4
 Nguyen Minh Tuan
-9 19 3
+9 18 2
 Tran Quang Huy
+10 21 5
+Phan Van Tai
+11 20 1
+Le Trung Kien
+12 22 4
+Bui Ngoc Viet
+17 21 1
+Nguyen Van Hiep
+14 18 4
+Nguyen Manh Tuong

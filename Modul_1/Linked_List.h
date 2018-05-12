@@ -46,6 +46,8 @@ class Linked_List
 		
 		void Clear();
 		
+		void Sort(bool (*compare) (dataType singleElement1, dataType singleElement2));
+		
 		node <dataType> *Begin();
 		
 		node <dataType> *End();
@@ -147,6 +149,28 @@ void Linked_List <dataType> :: Clear()
 		free(p);
 	}
 };
+
+// Sap xep cac phan tu cua danh sach theo thu tu xac dinh
+template <typename dataType>
+void Linked_List <dataType> :: Sort(bool (*Compare) (dataType singleElement1, dataType singleElement2))
+{
+	node <dataType> *p = this->myList->pHead;
+	while(p != this->myList->pTail)
+	{
+		node <dataType> *q = p->pNext;
+		while(q != NULL)
+		{
+			if(!(*Compare)(p->data, q->data))
+			{
+				dataType temp = p->data;
+				p->data = q->data;
+				q->data = temp;
+			}
+			q = q->pNext;
+		}
+		p = p->pNext;
+	}
+}
 
 // Tim phan tu thong qua key
 template <typename dataType>

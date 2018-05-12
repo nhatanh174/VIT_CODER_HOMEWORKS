@@ -1,11 +1,18 @@
 #include<iostream>
 #include<string.h>
 #include<fstream>
+#include<climits>
+#include<conio.h>
 #include"Linked_List.h"
 
 using namespace std;
 
 const char *filePath = "Data.txt";
+
+int PressNumber();
+int MenuBox();
+void FinishThisAction();
+void Deploy(int key);
 
 struct MEMBER
 {
@@ -27,6 +34,11 @@ bool operator != (member mem1, member mem2)
 	return (mem1.ID != mem2.ID);
 }
 
+bool Compare(member m1, member m2)
+{
+	return (m1.ID < m2.ID);
+}
+
 class List_of_Member 
 {
 	
@@ -46,7 +58,9 @@ class List_of_Member
 	
 		void DeleteMember(int ID);
 		
-		int NumberOfMember();
+		void NumberOfMember();
+		
+		void SortByID();
 		
 		void ViewDetail();
 	
@@ -93,14 +107,14 @@ void List_of_Member :: AddMember()
 	member newMember;
 	
 	cout << "ID: ";
-	cin >> newMember.ID;
+	newMember.ID = PressNumber();
 	cout << "Name: ";
 	cin.ignore();
 	getline(cin, newMember.name);
 	cout << "Age: ";
-	cin >> newMember.age;
+	newMember.age = PressNumber();
 	cout << "Group: ";
-	cin >> newMember.group_ID;
+	newMember.group_ID = PressNumber();
 	
 	memberList->AddToTail(newMember);
 }
@@ -120,6 +134,7 @@ void List_of_Member :: EditMemberInformationViaID(int ID)
 	{
 		cout << "Input new data:" << endl;
 		cout << "Name: ";
+		cin.ignore();
 		getline(cin, traced.name);
 		cout << "Age: ";
 		cin >> traced.age;
@@ -159,10 +174,16 @@ void List_of_Member :: FindMemberByID(int ID)
 	}
 }
 
-// Tra ve so thanh vien trong danh sach
-int List_of_Member :: NumberOfMember()
+// Tim mot thanh vien qua ID
+void List_of_Member :: NumberOfMember()
 {
-	return memberList->Length();
+	cout << "So thanh vien trong doi: " << memberList->Length() << endl;
+}
+
+//Sap xep cac thanh vien qua ID
+void List_of_Member :: SortByID()
+{
+	memberList->Sort(Compare);
 }
 
 // Destructor
@@ -185,13 +206,39 @@ List_of_Member :: ~List_of_Member()
 	output.close();
 	
 	memberList->Clear();
-	free(p);
-	free(memberList);
+	delete  memberList;
 	
 }
 
+// ============================================================================ PROGRAM ===============================================================================
+// ==================================================================== VIT MEMBER MANAGEMENT =========================================================================
 
 List_of_Member myList;
+
+int main()
+{
+	const int EXIT_CODE = 8;
+	int key;
+	do{
+		key = MenuBox();
+		Deploy(key);
+	}while(key != EXIT_CODE);
+	return 0;
+}
+
+int PressNumber()
+{
+	int number;
+	cin >> number;
+	while(cin.fail())
+	{
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+		cout << "Yeu cau nhap vao so: ";
+		cin >> number;
+	}
+	return number;
+}
 
 int MenuBox()
 {
@@ -202,11 +249,22 @@ int MenuBox()
 	cout << "4. Xoa mot thanh vien khoi danh sach\n";
 	cout << "5. So thanh vien trong doi\n";
 	cout << "6. Xem thong tin tat ca thanh vien trong doi\n";
-	cout << "7. Thoat\n";
-	cout << "Select: ";
+	cout << "7. Sap xep thanh vien theo ID\n";
+	cout << "8. Thoat\n";
 	int selection;
-	cin >> selection;
+	do{
+		cout << "Select: ";
+		selection = PressNumber();
+	}while(selection < 1 || selection > 8);
 	return selection;
+}
+
+void FinishThisAction()
+{
+	cout << "Press any key to continue...";
+	getch();
+	cin.ignore();
+	system("cls");
 }
 
 void Deploy(int key)
@@ -215,54 +273,49 @@ void Deploy(int key)
 	{
 		case 1:{
 			myList.AddMember();
+			FinishThisAction();
 			break;
 		}
 		
 		case 2:{
-			int ID;
-			cout << "ID thanh vien can chinh sua: ";
-			cin >> ID;
+			int ID = PressNumber();
 			myList.EditMemberInformationViaID(ID);
+			FinishThisAction();
 			break;
 		}
 		
 		case 3:{
-			int ID;
-			cout << "ID thanh vien can tim kiem: ";
-			cin >> ID;
+			int ID = PressNumber();
 			myList.FindMemberByID(ID);
+			FinishThisAction();
 			break;
 		}
 		
 		case 4:{
-			int ID;
-			cout << "ID thanh vien can xoa: ";
-			cin >> ID;
+			int ID = PressNumber();
 			myList.DeleteMember(ID);
+			FinishThisAction();
 			break;
 		}
 		
 		case 5:{
-			cout << "So thanh vien trong doi: " << myList.NumberOfMember() << endl;
+			myList.NumberOfMember();
+			FinishThisAction();
 			break;
 		}
 		
 		case 6:{
 			myList.ViewDetail();
+			FinishThisAction();
+			break;
+		}
+		
+		case 7:{
+			myList.SortByID();
+			FinishThisAction();
 			break;
 		}
 		
 		default: break;
 	}
-}
-
-int main()
-{
-	const int EXIT_CODE = 7;
-	int key;
-	do{
-		key = MenuBox();
-		Deploy(key);
-	}while(key != EXIT_CODE);
-	return 0;
 }
